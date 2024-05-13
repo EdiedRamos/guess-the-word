@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root {
+  --indigo: #7429c6;
+  --pink: #c951e7;
+  --purple: #672171;
+  --gray-100: #97a3b6;
+  --gray-200: #4a5567;
+  --dark-100: #121727;
+  --dark-200: #030616;
+  --light: #f2f5f9;
+
+  --fs-50: 12px;
+  --fs-100: 14px;
+  --fs-200: 20px;
+  --fs-300: 32px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Outfit", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("./assets/bg-guess-the-word.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.machine__container {
+  border-radius: 12px;
+  background: linear-gradient(to right, var(--dark-200), var(--dark-100));
+  padding: 0 26px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.machine__logo {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.machine__scramble {
+  margin-bottom: 24px;
+  box-shadow: 0 5px var(--dark-200);
+  border-radius: 8px;
+  background-color: var(--gray-200);
+  padding: 12px 0;
+  color: var(--gray-100);
+  font-size: var(--fs-300);
+  letter-spacing: 16px;
+
+  p {
+    word-wrap: break-word;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.machine__info__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.machine__text {
+  color: var(--gray-200);
+  font-size: var(--fs-50);
+}
+
+.machine__info__tries__container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.machine__tries__container {
+  display: flex;
+  gap: 5px;
+}
+
+.machine__tries {
+  border-radius: 50%;
+  background-color: var(--gray-200);
+  width: 7px;
+  height: 7px;
+}
+
+.machine__tries--used {
+  background-color: var(--indigo);
+}
+
+.machine__mistakes__container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.machine__mistakes {
+  color: var(--gray-100);
+}
+
+.machine__input__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 52px 0;
+}
+
+.machine__input {
+  --size: 40px;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  background-color: inherit;
+  width: var(--size);
+  height: var(--size);
+  color: var(--light);
+  font-size: var(--fs-200);
+  text-align: center;
+}
+
+.machine__input--current {
+  border-color: var(--purple);
+}
+
+.machine__control__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 32px;
+}
+
+.machine__control {
+  box-shadow: 0 5px var(--purple);
+  border: none;
+  border-radius: 8px;
+  background-color: var(--pink);
+  padding: 10px 24px;
+  color: var(--light);
+  font-size: var(--pink);
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: translateY(5px);
+    box-shadow: none;
+  }
+}
