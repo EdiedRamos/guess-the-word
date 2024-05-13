@@ -1,7 +1,8 @@
 import { ScrambleService } from "./services/scramble.service.js";
 
 function main() {
-  alert(ScrambleService.getRandomWord());
+  const scrambled = ScrambleService.getScrambledWord();
+  alert(`${scrambled.original} ${scrambled.scrambled}`);
 }
 
 document.addEventListener("DOMContentLoaded", main);
