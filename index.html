@@ -17,45 +17,32 @@
 
       <!-- scramble word -->
       <div class="machine__scramble">
-        <p>relowf</p>
+        <p id="srambled-word"></p>
       </div>
 
       <!-- game information -->
       <div class="machine__info__container">
         <div class="machine__info__tries__container">
-          <p class="machine__text">Tries (4/5):</p>
-          <div class="machine__tries__container">
-            <div class="machine__tries machine__tries--used"></div>
-            <div class="machine__tries machine__tries--used"></div>
-            <div class="machine__tries machine__tries--used"></div>
-            <div class="machine__tries machine__tries--used"></div>
-            <div class="machine__tries"></div>
+          <p id="tries-counter" class="machine__text"></p>
+          <div id="tries-container" class="machine__tries__container">
+            <!-- content injection here -->
           </div>
         </div>
         <div class="machine__mistakes__container">
           <p class="machine__text">Mistakes:</p>
-          <p class="machine__mistakes">a, e, w, t</p>
+          <p id="mistakes" class="machine__mistakes"></p>
         </div>
       </div>
 
       <!-- game inputs -->
-      <div class="machine__input__container">
-        <input class="machine__input" type="text" value="f" />
-        <input class="machine__input" type="text" value="l" />
-        <input class="machine__input" type="text" value="o" />
-        <input class="machine__input" type="text" value="w" />
-        <input
-          class="machine__input machine__input--current"
-          type="text"
-          value="_"
-        />
-        <input class="machine__input" type="text" value="" />
+      <div id="input-container" class="machine__input__container">
+        <!-- content injection here -->
       </div>
 
       <!-- game controls -->
       <div class="machine__control__container">
-        <button class="machine__control">Random</button>
-        <button class="machine__control">Reset</button>
+        <button id="random-button" class="machine__control">Random</button>
+        <button id="reset-button" class="machine__control">Reset</button>
       </div>
     </section>
 

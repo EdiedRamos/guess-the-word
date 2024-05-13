@@ -85,6 +85,7 @@ body {
 
 .machine__tries__container {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -119,6 +120,7 @@ body {
 
 .machine__input {
   --size: 40px;
+  outline: none;
   border: 2px solid var(--gray-200);
   border-radius: 8px;
   background-color: inherit;
@@ -127,6 +129,10 @@ body {
   color: var(--light);
   font-size: var(--fs-200);
   text-align: center;
+
+  &::placeholder {
+    color: inherit;
+  }
 }
 
 .machine__input--current {
