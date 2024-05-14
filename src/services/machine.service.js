@@ -1,4 +1,5 @@
 import { InterfaceService } from "./interface.service.js";
+import { JSConfetti } from "../libs/confetti.js";
 import { WordsService } from "./words.service.js";
 
 export class MachineService {
@@ -19,6 +20,8 @@ export class MachineService {
 
     this.resetWord();
     this.resetWordScrambled();
+
+    this.confetti = new JSConfetti();
 
     /**
      * Maximum tries allowed
@@ -79,7 +82,7 @@ export class MachineService {
     if (areRemainingLetters) {
       this.interfaceService.setCurrentInput(this.currentIndex);
     } else {
-      console.log("😎😎🎶🎶");
+      this.confetti.addConfetti();
       this.nextGame();
     }
   }
