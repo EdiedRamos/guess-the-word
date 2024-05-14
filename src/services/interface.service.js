@@ -4,9 +4,7 @@ import {
   updateInputToCurrent,
 } from "../utils/utils.js";
 
-import { MachineService } from "./machine.service.js";
-
-class InterfaceService {
+export class InterfaceService {
   constructor() {
     if (InterfaceService.instance) {
       return InterfaceService.instance;
@@ -48,10 +46,11 @@ class InterfaceService {
     this.resetButtonNode = document.getElementById("reset-button");
 
     InterfaceService.instance = this;
+
+    this.addListeners();
   }
 
   addListeners() {
-    this.randonButtonNode.addEventListener("click", this.randomEvent);
     this.resetButtonNode.addEventListener("click", this.resetEvent);
     this.inputContainerNode.addEventListener("input", this.insertInputEvent);
   }
@@ -60,32 +59,60 @@ class InterfaceService {
     this.scrambledWordNode.textContent = scrambledWord;
   }
 
-  setTriesCounter(tries) {
-    this.triesCounterNode.textContent = `Tries: (${tries}/${MachineService.MAX_TRIES}):`;
+  /**
+   * Function to render the tries counter
+   * @param {number} tries Current tries
+   * @param {number} maxTries Maximum number of tries
+   * @returns {void}
+   */
+  setTriesCounter(tries, maxTries) {
+    this.triesCounterNode.textContent = `Tries: (${tries}/${maxTries}):`;
   }
 
-  setTriesCircles() {
-    for (let i = 0; i < MachineService.MAX_TRIES; i++) {
+  /**
+   * Function to render the tries circles
+   * @param {number} maxTries Maximum number of tries
+   */
+  setTriesCircles(maxTries) {
+    this.triesContainerNode.innerHTML = "";
+    for (let i = 0; i < maxTries; i++) {
       const circleNode = document.createElement("div");
       circleNode.classList.add("machine__tries");
       this.triesContainerNode.appendChild(circleNode);
     }
   }
 
-  addMistake() {
-    const mock = ["a", "b", "c"];
-    this.mistakesNode.textContent = mock.join(", ");
+  /**
+   * Function to paint the tries circles
+   * @param {number} mistakes
+   * @returns {void}
+   */
+  setTriesCirclesUsed(mistakes) {
+    const circles = this.triesContainerNode.children;
+    if (mistakes > circles.length) throw new Error("Mistakes out of bound");
+    for (let i = 0; i < mistakes; i++) {
+      circles[i].classList.add("machine__tries--used");
+    }
   }
 
+  /**
+   * Function to render the mistakes
+   * @param {string[]} mistakes
+   * @returns {void}
+   */
+  renderMistakes(mistakes) {
+    this.mistakesNode.textContent =
+      mistakes.length > 0 ? mistakes.join(", ") : "🤞";
+  }
+
+  /**
+   *
+   * @param {number} length Number of inputs
+   */
   setInitialInputs(length) {
+    this.inputContainerNode.innerHTML = "";
     for (let i = 0; i < length; i++) {
       const inputNode = getBaseInput();
-      // <!-- <input class="machine__input" type="text" value="f" placeholder="_" /> -->
-      // if (i === 0) {
-      //   inputNode.classList.add("machine__input--current");
-      //   inputNode.placeholder = "_";
-      //   inputNode.disabled = false;
-      // }
       this.inputContainerNode.appendChild(inputNode);
     }
   }
@@ -101,18 +128,12 @@ class InterfaceService {
     updateInputToCurrent(currentInput);
   }
 
-  /**
-   * @private
-   */
-  randomEvent() {
-    console.log("randomEvent");
+  randomEventListener(callback) {
+    this.randonButtonNode.addEventListener("click", callback);
   }
 
-  /**
-   * @private
-   */
-  resetEvent() {
-    console.log("restartEvent");
+  resetEventListener(callback) {
+    this.resetButtonNode.addEventListener("click", callback);
   }
 
   /**

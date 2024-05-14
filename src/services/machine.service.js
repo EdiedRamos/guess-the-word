@@ -1,18 +1,27 @@
+import { InterfaceService } from "./interface.service.js";
+import { WordsService } from "./words.service.js";
+
 export class MachineService {
   /**
-   * Maximum tries allowed
-   * @type {number}
-   */
-  static MAX_TRIES = 5;
-
-  /**
    * MachineService constructor
-   * @param {string} word
-   * @param {string} wordScrambled
+   * @param {InterfaceService} interfaceService
+   * @param {WordsService} wordsService
    */
-  constructor(word, wordScrambled) {
-    this.word = word;
-    this.wordScrambled = wordScrambled;
+  constructor(interfaceService, wordsService) {
+    this.interfaceService = interfaceService;
+    this.wordsService = wordsService;
+
+    this.interfaceService.randomEventListener(this.onRandom);
+    this.interfaceService.resetEventListener(() => this.onReset());
+
+    this.resetWord();
+    this.resetWordScrambled();
+
+    /**
+     * Maximum tries allowed
+     * @type {number}
+     */
+    this.MAX_TRIES = 5;
 
     /**
      * Tries counter
@@ -34,6 +43,14 @@ export class MachineService {
      * @private
      */
     this.currentIndex = 0;
+  }
+
+  resetWord() {
+    this.word = this.wordsService.getRandomWord();
+  }
+
+  resetWordScrambled() {
+    this.wordScrambled = this.wordsService.toScrambled(this.word);
   }
 
   /**
@@ -66,4 +83,23 @@ export class MachineService {
    * @private
    */
   attemptedLetter() {}
+
+  onRandom() {
+    // code goes here
+  }
+
+  onReset() {
+    this.resetGame();
+  }
+
+  resetGame() {
+    this.resetWord();
+    this.resetWordScrambled();
+    this.interfaceService.setScrambledWord(this.wordScrambled);
+    this.interfaceService.setTriesCounter(0, this.MAX_TRIES);
+    this.interfaceService.setTriesCircles(this.MAX_TRIES);
+    this.interfaceService.renderMistakes([]);
+    this.interfaceService.setInitialInputs(this.word.length);
+    this.interfaceService.setCurrentInput(0);
+  }
 }
