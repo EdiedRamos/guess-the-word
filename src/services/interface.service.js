@@ -118,8 +118,6 @@ export class InterfaceService {
   }
 
   setCurrentInput(index) {
-    console.log({ check: this.inputContainerNode.children });
-
     if (index > 0) {
       updateInputToBase(this.inputContainerNode.children[index - 1]);
     }

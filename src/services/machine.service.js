@@ -11,7 +11,7 @@ export class MachineService {
     this.interfaceService = interfaceService;
     this.wordsService = wordsService;
 
-    this.interfaceService.randomEventListener(this.onRandom);
+    this.interfaceService.randomEventListener(() => this.onRandom());
     this.interfaceService.resetEventListener(() => this.onReset());
 
     this.resetWord();
@@ -85,7 +85,13 @@ export class MachineService {
   attemptedLetter() {}
 
   onRandom() {
-    // code goes here
+    this.currentIndex = 0;
+    this.resetWord();
+    this.resetWordScrambled();
+
+    this.interfaceService.setScrambledWord(this.wordScrambled);
+    this.interfaceService.setInitialInputs(this.word.length);
+    this.interfaceService.setCurrentInput(this.currentIndex);
   }
 
   onReset() {
@@ -93,13 +99,16 @@ export class MachineService {
   }
 
   resetGame() {
+    this.currentIndex = 0;
+    this.tries = 0;
     this.resetWord();
     this.resetWordScrambled();
+
     this.interfaceService.setScrambledWord(this.wordScrambled);
-    this.interfaceService.setTriesCounter(0, this.MAX_TRIES);
+    this.interfaceService.setInitialInputs(this.word.length);
+    this.interfaceService.setTriesCounter(this.tries, this.MAX_TRIES);
     this.interfaceService.setTriesCircles(this.MAX_TRIES);
     this.interfaceService.renderMistakes([]);
-    this.interfaceService.setInitialInputs(this.word.length);
-    this.interfaceService.setCurrentInput(0);
+    this.interfaceService.setCurrentInput(this.currentIndex);
   }
 }
