@@ -13,6 +13,9 @@ export class MachineService {
 
     this.interfaceService.randomEventListener(() => this.onRandom());
     this.interfaceService.resetEventListener(() => this.onReset());
+    this.interfaceService.inputEventListener((event) =>
+      this.guessingLetter(event)
+    );
 
     this.resetWord();
     this.resetWordScrambled();
@@ -55,12 +58,15 @@ export class MachineService {
 
   /**
    * Check if the current letter is correct
-   * @param {str} letter
+   * @param {HTMLInputElement} event
    * @returns {void}
    */
-  guessingLetter(letter) {
-    const isTheCorrectLetter = this.word[this.currentIndex] === letter;
-    isTheCorrectLetter ? this.guessedLetter() : this.attemptedLetter();
+  guessingLetter(event) {
+    const letter = event.target.value;
+    if (typeof letter !== "string") return;
+    const isTheCorrectLetter =
+      this.word[this.currentIndex].toLowerCase() === letter.toLowerCase();
+    isTheCorrectLetter ? this.guessedLetter() : this.attemptedLetter(event);
   }
 
   /**
@@ -71,20 +77,46 @@ export class MachineService {
     const areRemainingLetters = ++this.currentIndex < this.word.length;
 
     if (areRemainingLetters) {
-      // next letter logic goes here
+      this.interfaceService.setCurrentInput(this.currentIndex);
     } else {
-      // winner logic goes here
+      console.log("😎😎🎶🎶");
+      this.nextGame();
     }
   }
 
   /**
    * Wrong letter logic
+   * @param {HTMLInputElement} event
    * @returns {void}
    * @private
    */
-  attemptedLetter() {}
+  attemptedLetter(event) {
+    this.tries++;
+    this.mistakes.push(event.target.value);
+
+    if (this.tries > this.MAX_TRIES) {
+      this.resetGame();
+      return;
+    }
+
+    this.interfaceService.renderMistakes(this.mistakes);
+    this.interfaceService.setTriesCounter(this.tries, this.MAX_TRIES);
+    this.interfaceService.setTriesCirclesUsed(this.tries);
+
+    setTimeout(() => {
+      event.target.value = "";
+    }, 500);
+  }
 
   onRandom() {
+    this.nextGame();
+  }
+
+  onReset() {
+    this.resetGame();
+  }
+
+  nextGame() {
     this.currentIndex = 0;
     this.resetWord();
     this.resetWordScrambled();
@@ -94,11 +126,8 @@ export class MachineService {
     this.interfaceService.setCurrentInput(this.currentIndex);
   }
 
-  onReset() {
-    this.resetGame();
-  }
-
   resetGame() {
+    this.mistakes = [];
     this.currentIndex = 0;
     this.tries = 0;
     this.resetWord();
@@ -108,7 +137,7 @@ export class MachineService {
     this.interfaceService.setInitialInputs(this.word.length);
     this.interfaceService.setTriesCounter(this.tries, this.MAX_TRIES);
     this.interfaceService.setTriesCircles(this.MAX_TRIES);
-    this.interfaceService.renderMistakes([]);
+    this.interfaceService.renderMistakes(this.mistakes);
     this.interfaceService.setCurrentInput(this.currentIndex);
   }
 }

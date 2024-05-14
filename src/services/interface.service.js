@@ -46,13 +46,6 @@ export class InterfaceService {
     this.resetButtonNode = document.getElementById("reset-button");
 
     InterfaceService.instance = this;
-
-    this.addListeners();
-  }
-
-  addListeners() {
-    this.resetButtonNode.addEventListener("click", this.resetEvent);
-    this.inputContainerNode.addEventListener("input", this.insertInputEvent);
   }
 
   setScrambledWord(scrambledWord) {
@@ -134,20 +127,27 @@ export class InterfaceService {
     this.resetButtonNode.addEventListener("click", callback);
   }
 
+  inputEventListener(callback) {
+    this.inputContainerNode.addEventListener("input", (event) => {
+      const isCorrect = this.inputEventCleaner(event);
+      if (!isCorrect) return;
+      callback(event);
+    });
+  }
+
   /**
+   * Function to clean and validate input value
+   * @returns {boolean} true if all it's fine, otherwise false
    * @private
    */
-  insertInputEvent(event) {
-    console.log(event);
-    if (!event) return;
-    let { value } = event.target;
-    if (!/[a-zA-Z]/.test(value)) {
+  inputEventCleaner(event) {
+    if (!event) return false;
+    // must be a letter
+    if (!/[a-zA-Z]/.test(event.target.value)) {
       event.target.value = "";
-      return;
+      return false;
     }
-    setTimeout(() => {
-      event.target.value = "";
-    }, 1000);
+    return true;
   }
 }
 
